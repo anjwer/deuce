@@ -2,6 +2,7 @@ package com.deuce.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -9,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class FrontController extends HttpServlet {
+    private List<String> listeControllers;
+    
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
         throws ServletException, IOException {

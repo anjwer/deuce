@@ -10,7 +10,7 @@
 [ok]- transformer en .jar 
 [ok]- appeler dans cleo
 
-- apprendre les annotations 
+[ok]- apprendre les annotations 
     - creer ses annotations
     - classe, methode, attribut 
 
@@ -22,10 +22,10 @@
                     on print apres 
 
 FW
-- creer une classe annotation.Controller 
-- ajouter attribut List<String> controllers dans FC
-- creation classe Utilitaire
-- methode qui prend le package + nom annotation + au niveau classe/attribut ou methode en parm
+[ok]- creer une classe annotation.Controller 
+[ok]- ajouter attribut List<String> controllers dans FC
+[ok]- creation classe Utilitaire
+- methode qui prend le package + nom annotation + au niveau classe/attribut ou methode en param
     - verifier si l'annotation est la 
 - scan 
 - methode init dans FC
@@ -37,3 +37,5 @@ Projet TEST
 
 - listener dans application java
     - a declarer dans web.xml du client 
+
+- creer des classes controllers avec l'annotation
