@@ -32,10 +32,42 @@ FW
 [ok]    - initialise la liste de controllers
 
 Projet TEST
-[wip]- web.xml 
+[ok]- web.xml 
     - package des controllers dans appli de test (FC appelle cet attribut) 
 
 - listener dans application java
     - a declarer dans web.xml du client 
 
 [ok]- creer des classes controllers avec l'annotation
+
+## S2 : url mapping
+
+FW
+- annotation urlmapping 
+    - s applique aux methodes
+    - valeur = string qui contient url
+
+- quand j'appelle l'url j'affiche l url + classe + methode 
+- si je trouve pas j'affiche toutes les urls + classes + methodes 
+
+classe mapping
+    - classe
+    - methode 
+
+Fc : creation du map <url, mapping>
+
+TEST 
+- annoter une methode avec l'urlmapping  
+
+## S3 : unicite url
+
+FW:
+- classe UrlMethod
+    - url
+    - methode 
+    - surdefinir methode equals 
+
+- urlmapping
+    - ajouter attribut methode 
+
+
