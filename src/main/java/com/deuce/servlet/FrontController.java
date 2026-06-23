@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.annotation.ElementType;
 import java.util.List;
+import java.util.Map;
 
 import com.deuce.utils.Utilitaire;
 
@@ -13,16 +14,21 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class FrontController extends HttpServlet {
-    private List<String> listeControllers;
+    private List<String> controllersList;
+    private Map<String, Mapping> urlMap;
     
     public void init() throws ServletException {
         try {
             String packageName = getServletConfig().getInitParameter("packageControllers");
-            listeControllers = Utilitaire.getAnnotatedList(packageName, "com.deuce.annotation.Controller",  ElementType.TYPE);
+            controllersList = Utilitaire.getAnnotatedList(packageName, "com.deuce.annotation.Controller",  ElementType.TYPE);
+
+            urlMap = Utilitaire.getAnnotatedList(packageName, "com.deuce.annotation.UrlMapping",  ElementType.METHOD);
+
         } catch (Exception e) {
             System.out.println("Erreur lors de la recuperation des controllers : " + e.getMessage());
         } 
     }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
         throws ServletException, IOException {
@@ -43,8 +49,8 @@ public class FrontController extends HttpServlet {
             try (PrintWriter out = res.getWriter()) {
                 out.println("<html><body>");
                 out.println("<p> hellooooo world </p>");
-                // if (listeControllers != null) out.println("null");
-                for (String controller : listeControllers) {
+                // if (controllersList != null) out.println("null");
+                for (String controller : controllersList) {
                     out.println("<p>" + controller + "</p>");
                     
                 }

@@ -43,18 +43,29 @@ Projet TEST
 ## S2 : url mapping
 
 FW
-- annotation urlmapping 
-    - s applique aux methodes
-    - valeur = string qui contient url
+[ok] - annotation urlmapping 
+[ok]    - s applique aux methodes
+[ok]    - valeur = string qui contient url
 
 - quand j'appelle l'url j'affiche l url + classe + methode 
 - si je trouve pas j'affiche toutes les urls + classes + methodes 
 
-classe mapping
+[ok] classe mapping
     - classe
     - methode 
 
 Fc : creation du map <url, mapping>
+
+init
+    - recuperer les controllers et mettre dans une liste de String (S1)
+    - url => classe associee + methode associee 
+
+    - par classe
+        - verifier si il y a un urlMapping
+        - si oui le faire entrer dans le map
+            - recuperer sa classe + sa methode en utilisant le type 
+        - si non
+            - 
 
 TEST 
 - annoter une methode avec l'urlmapping  

@@ -24,12 +24,12 @@ public class Utilitaire {
                 File[] files = directory.listFiles((dir, name) -> name.endsWith(".class"));
                 if (files!=null) {
                     for (File file : files) {
-                        String controller = getAnnotatedClass(file, packageName, annotation, type);
+                        String fileName = file.getName();
+                        // String controller = getAnnotatedClass(file, packageName, annotation, type);
                         if (controller!=null){
                             annotatedList.add(controller);       
                         }
                     }
-
                 }
             }
         }
@@ -58,4 +58,31 @@ public class Utilitaire {
         } 
         return null;
     }
+
+    // public static String getUrlMap(){
+
+    // }
+
+    public static List<String> getAnnotation(String fileName, String packageName, String annotation, ElementType type){
+        List<String> annotations = new ArrayList<>();
+        // nom complet avec package
+        String className = packageName + "." + fileName.substring(0, fileName.length() - 6);
+        try{
+            Class<?> clazz = Class.forName(className);
+            
+            // On détermine le nom de la classe (ex: "ChequeController")
+            String simpleName = clazz.getSimpleName();
+
+            Class<?> annot = Class.forName(annotation);
+            if (annot!=null) {
+                System.out.println("String ajoute pour le controller : " + simpleName);
+                return simpleName;
+            }
+ 
+        }catch(ClassNotFoundException | NoClassDefFoundError e) {
+            System.err.println("Impossible de charger la classe: " + className + " - " + e.getMessage());
+        } 
+        return null;
+    }
+
 }
