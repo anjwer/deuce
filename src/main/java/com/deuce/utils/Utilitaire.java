@@ -1,13 +1,14 @@
 package com.deuce.utils;
 
 import java.io.File;
+import java.lang.annotation.ElementType;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Utilitaire {
     
-    public static List<String> initializeMappings(String packageName, String annotation, String type) throws Exception {
+    public static List<String> getAnnotatedList(String packageName, String annotation, ElementType type) throws Exception {
         List<String> annotatedList = new ArrayList<>();
         String path = packageName.replace('.', '/');
 
@@ -35,7 +36,7 @@ public class Utilitaire {
         return annotatedList;
     }
 
-    public static String getAnnotatedClass(File file, String packageName, String annotation, String type){
+    public static String getAnnotatedClass(File file, String packageName, String annotation, ElementType type){
         String fileName = file.getName();
 
         // nom complet avec package

@@ -25,17 +25,17 @@ FW
 [ok]- creer une classe annotation.Controller 
 [ok]- ajouter attribut List<String> controllers dans FC
 [ok]- creation classe Utilitaire
-- methode qui prend le package + nom annotation + au niveau classe/attribut ou methode en param
-    - verifier si l'annotation est la 
-- scan 
-- methode init dans FC
-    - initialise la liste de controllers
+[ok]- methode qui prend le package + nom annotation + au niveau classe/attribut ou methode en param
+[ok]    - verifier si l'annotation est la 
+[ok]- scan 
+[ok]- methode init dans FC
+[ok]    - initialise la liste de controllers
 
 Projet TEST
-- web.xml 
+[wip]- web.xml 
     - package des controllers dans appli de test (FC appelle cet attribut) 
 
 - listener dans application java
     - a declarer dans web.xml du client 
 
-- creer des classes controllers avec l'annotation
+[ok]- creer des classes controllers avec l'annotation
