@@ -6,15 +6,14 @@ import java.lang.annotation.ElementType;
 import java.util.List;
 import java.util.Map;
 
+import com.deuce.utils.Mapping;
 import com.deuce.utils.Utilitaire;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class FrontController extends HttpServlet {
-    private List<String> controllersList;
     private Map<String, Mapping> urlMap;
     
     public void init() throws ServletException {
