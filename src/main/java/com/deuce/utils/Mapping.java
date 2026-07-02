@@ -22,5 +22,11 @@ public class Mapping {
         this.method = method;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Mapping \n" +
+                "controller=" + (controller != null ? controller.getName() : "null") +
+                ", method=" + (method != null ? method.getName() : "null") +
+                '\n';
+    }
 }

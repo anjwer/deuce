@@ -1,3 +1,5 @@
 com/deuce/utils/Utilitaire.class
 com/deuce/annotation/Controller.class
+com/deuce/utils/Mapping.class
+com/deuce/annotation/UrlMapping.class
 com/deuce/servlet/FrontController.class

@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Map;
 
+import com.deuce.annotation.UrlMapping;
+
 public class Utilitaire {
     
     public static File[] getDirectoryFiles(String packageName){
@@ -28,7 +30,7 @@ public class Utilitaire {
     }
 
 
-    public static Mapping getMappingController(String packageName, Class<? extends Annotation> controllerAnnotation,
+   /* public static Mapping getMappingController(String packageName, Class<? extends Annotation> controllerAnnotation,
         Class<? extends Annotation> methodAnnotation) {
 
         Mapping mapping = new Mapping();
@@ -56,10 +58,9 @@ public class Utilitaire {
             }
         }
 
-    }
+    }*/
 
-    public static void setUrlMap(Map<String, Mapping> urlMap, String packageName, Class<? extends Annotation> controllerAnnotation,
-        Class<? extends Annotation> methodAnnotation){
+    public static void setUrlMap(Map<String, Mapping> urlMap, String packageName, Class<? extends Annotation> controllerAnnotation){
 
         File[] files = getDirectoryFiles(packageName);
 
@@ -72,11 +73,13 @@ public class Utilitaire {
 
                     if (clazz.isAnnotationPresent(controllerAnnotation)) {
                         for (Method m : clazz.getDeclaredMethods()) {
-                            if (m.isAnnotationPresent(methodAnnotation)) {
-                                
+                            if (m.isAnnotationPresent(UrlMapping.class)) {
+                                Mapping mapping = new Mapping();
                                 mapping.setController(clazz);
                                 mapping.setMethod(m);
-                                return mapping;
+
+                                UrlMapping annotation = m.getAnnotation(UrlMapping.class);
+                                urlMap.put(annotation.value(), mapping);
                             }
                         }
                     }

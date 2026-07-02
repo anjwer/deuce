@@ -2,12 +2,12 @@ package com.deuce.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.annotation.ElementType;
-import java.util.List;
 import java.util.Map;
 
+import com.deuce.annotation.Controller;
 import com.deuce.utils.Mapping;
 import com.deuce.utils.Utilitaire;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,10 +19,7 @@ public class FrontController extends HttpServlet {
     public void init() throws ServletException {
         try {
             String packageName = getServletConfig().getInitParameter("packageControllers");
-            controllersList = Utilitaire.getAnnotatedList(packageName, "com.deuce.annotation.Controller",  ElementType.TYPE);
-
-            urlMap = Utilitaire.getAnnotatedList(packageName, "com.deuce.annotation.UrlMapping",  ElementType.METHOD);
-
+            Utilitaire.setUrlMap(urlMap, packageName, Controller.class);
         } catch (Exception e) {
             System.out.println("Erreur lors de la recuperation des controllers : " + e.getMessage());
         } 
@@ -49,8 +46,8 @@ public class FrontController extends HttpServlet {
                 out.println("<html><body>");
                 out.println("<p> hellooooo world </p>");
                 // if (controllersList != null) out.println("null");
-                for (String controller : controllersList) {
-                    out.println("<p>" + controller + "</p>");
+                for (Map.Entry<String, Mapping> entry : urlMap.entrySet()) {
+                    out.println("<p>" + entry.getKey() + "\n" + entry.getValue() + "</p>");
                     
                 }
                 out.println("</body></html>");
