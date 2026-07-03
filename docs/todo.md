@@ -95,3 +95,17 @@ Utiliraire :
 
 
 ## S4 : context listener
+- a prendre chez quelqu'un
+
+## S5 : affichage de liste en dur
+- ModelAndView 
+    - map <String, object>
+    - url
+
+- dnas le controller on retourne un MAV 
+    - setURL
+
+- prefixe et suffixe dans initparam
+- concatener l'url
+
+- recup MAV -> request setAttribute 

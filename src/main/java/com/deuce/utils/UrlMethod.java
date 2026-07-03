@@ -1,5 +1,7 @@
 package com.deuce.utils;
 
+import java.util.Objects;
+
 public class UrlMethod {
     private String url;
     private String method;
@@ -20,4 +22,14 @@ public class UrlMethod {
         this.method = method;
     }
 
+    @Override
+    public boolean equals(UrlMethod urlMethod){
+        if (this == urlMethod) return true;
+        return url.equals(urlMethod.getUrl()) && method.equalsIgnoreCase(urlMethod.getMethod());
+    }
+
+     @Override
+    public int hashCode(){
+        return  Objects.hash(url, method);
+    }
 }
