@@ -2,6 +2,7 @@ package com.deuce.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.deuce.annotation.Controller;
@@ -17,6 +18,7 @@ public class FrontController extends HttpServlet {
     private Map<String, Mapping> urlMap;
     
     public void init() throws ServletException {
+        urlMap = new HashMap<>();
         try {
             String packageName = getServletConfig().getInitParameter("packageControllers");
             Utilitaire.setUrlMap(urlMap, packageName, Controller.class);
@@ -45,12 +47,27 @@ public class FrontController extends HttpServlet {
             try (PrintWriter out = res.getWriter()) {
                 out.println("<html><body>");
                 out.println("<p> hellooooo world </p>");
+
+                String url = req.getRequestURI().substring(req.getContextPath().length());
+
+                afficher(req, res, url, out);
                 // if (controllersList != null) out.println("null");
-                for (Map.Entry<String, Mapping> entry : urlMap.entrySet()) {
-                    out.println("<p>" + entry.getKey() + "\n" + entry.getValue() + "</p>");
-                    
-                }
+
                 out.println("</body></html>");
             }
         }
+
+    void afficher (HttpServletRequest req, HttpServletResponse res, String url, PrintWriter out)
+        throws ServletException, IOException {
+        if (urlMap.containsKey(url)){
+            out.println("trouve");
+            out.println("<p>" + url + "\n" + urlMap.get(url) + "</p>");
+            
+        } else {
+            out.println("non trouve");
+            for (Map.Entry<String, Mapping> entry : urlMap.entrySet()) {
+                out.println("<p>" + entry.getKey() + "\n" + entry.getValue() + "</p>");
+            }
+        }
+    }
 }

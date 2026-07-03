@@ -54,13 +54,13 @@ FW
     - classe
     - methode 
 
-Fc : creation du map <url, mapping>
+[ok] Fc : creation du map <url, mapping>
 
 init
     - recuperer les controllers et mettre dans une liste de String (S1)
     - url => classe associee + methode associee 
 
-    - par classe
+    [ok] - par classe
         - verifier si il y a un urlMapping
         - si oui le faire entrer dans le map
             - recuperer sa classe + sa methode en utilisant le type 
