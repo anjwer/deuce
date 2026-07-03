@@ -1,15 +1,17 @@
 package com.deuce.utils;
 
 import java.io.File;
-import java.lang.annotation.ElementType;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+
+import com.deuce.annotation.UrlMapping;
 
 public class Utilitaire {
     
-    public static List<String> getAnnotatedList(String packageName, String annotation, ElementType type) throws Exception {
-        List<String> annotatedList = new ArrayList<>();
+    public static File[] getDirectoryFiles(String packageName){
+        File [] files = new File[0];
         String path = packageName.replace('.', '/');
 
         // localisateur : donne le chemin complet pour trouver le dossier du package
@@ -21,41 +23,72 @@ public class Utilitaire {
             File directory = new File(resource.getFile().replace("%20", " "));
 
             if (directory.exists()) {
-                File[] files = directory.listFiles((dir, name) -> name.endsWith(".class"));
-                if (files!=null) {
-                    for (File file : files) {
-                        String controller = getAnnotatedClass(file, packageName, annotation, type);
-                        if (controller!=null){
-                            annotatedList.add(controller);       
+                files = directory.listFiles((dir, name) -> name.endsWith(".class"));
+            }
+        }
+        return files;
+    }
+
+
+   /* public static Mapping getMappingController(String packageName, Class<? extends Annotation> controllerAnnotation,
+        Class<? extends Annotation> methodAnnotation) {
+
+        Mapping mapping = new Mapping();
+        File[] files = getDirectoryFiles(packageName);
+
+        if (files != null) {
+            for (File file : files) {
+                String className = packageName + "." + file.getName().replace(".class", "");
+
+                try {
+                    Class<?> clazz = Class.forName(className);
+
+                    if (clazz.isAnnotationPresent(controllerAnnotation)) {
+                        for (Method m : clazz.getDeclaredMethods()) {
+                            if (m.isAnnotationPresent(methodAnnotation)) {
+                                mapping.setController(clazz);
+                                mapping.setMethod(m);
+                                return mapping;
+                            }
                         }
                     }
-
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
-        return annotatedList;
-    }
 
-    public static String getAnnotatedClass(File file, String packageName, String annotation, ElementType type){
-        String fileName = file.getName();
+    }*/
 
-        // nom complet avec package
-        String className = packageName + "." + fileName.substring(0, fileName.length() - 6);
-        try{
-            Class<?> clazz = Class.forName(className);
-            
-            // On détermine le nom de la classe (ex: "ChequeController")
-            String simpleName = clazz.getSimpleName();
+    public static void setUrlMap(Map<String, Mapping> urlMap, String packageName, Class<? extends Annotation> controllerAnnotation){
 
-            Class<?> annot = Class.forName(annotation);
-            if (annot!=null) {
-                System.out.println("String ajoute pour le controller : " + simpleName);
-                return simpleName;
+        File[] files = getDirectoryFiles(packageName);
+
+        if (files != null) {
+            for (File file : files) {
+                String className = packageName + "." + file.getName().replace(".class", "");
+
+                try {
+                    Class<?> clazz = Class.forName(className);
+
+                    if (clazz.isAnnotationPresent(controllerAnnotation)) {
+                        for (Method m : clazz.getDeclaredMethods()) {
+                            if (m.isAnnotationPresent(UrlMapping.class)) {
+                                Mapping mapping = new Mapping();
+                                mapping.setController(clazz);
+                                mapping.setMethod(m);
+
+                                UrlMapping annotation = m.getAnnotation(UrlMapping.class);
+                                urlMap.put(annotation.value(), mapping);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+        }
  
-        }catch(ClassNotFoundException | NoClassDefFoundError e) {
-            System.err.println("Impossible de charger la classe: " + className + " - " + e.getMessage());
-        } 
-        return null;
     }
+
 }

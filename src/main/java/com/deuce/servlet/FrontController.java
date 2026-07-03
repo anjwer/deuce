@@ -2,9 +2,11 @@ package com.deuce.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.annotation.ElementType;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.deuce.annotation.Controller;
+import com.deuce.utils.Mapping;
 import com.deuce.utils.Utilitaire;
 
 import jakarta.servlet.ServletException;
@@ -13,16 +15,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class FrontController extends HttpServlet {
-    private List<String> listeControllers;
+    private Map<String, Mapping> urlMap;
     
     public void init() throws ServletException {
+        urlMap = new HashMap<>();
         try {
             String packageName = getServletConfig().getInitParameter("packageControllers");
-            listeControllers = Utilitaire.getAnnotatedList(packageName, "com.deuce.annotation.Controller",  ElementType.TYPE);
+            Utilitaire.setUrlMap(urlMap, packageName, Controller.class);
         } catch (Exception e) {
             System.out.println("Erreur lors de la recuperation des controllers : " + e.getMessage());
         } 
     }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
         throws ServletException, IOException {
@@ -43,12 +47,27 @@ public class FrontController extends HttpServlet {
             try (PrintWriter out = res.getWriter()) {
                 out.println("<html><body>");
                 out.println("<p> hellooooo world </p>");
-                // if (listeControllers != null) out.println("null");
-                for (String controller : listeControllers) {
-                    out.println("<p>" + controller + "</p>");
-                    
-                }
+
+                String url = req.getRequestURI().substring(req.getContextPath().length());
+
+                afficher(req, res, url, out);
+                // if (controllersList != null) out.println("null");
+
                 out.println("</body></html>");
             }
         }
+
+    void afficher (HttpServletRequest req, HttpServletResponse res, String url, PrintWriter out)
+        throws ServletException, IOException {
+        if (urlMap.containsKey(url)){
+            out.println("trouve");
+            out.println("<p>" + url + "\n" + urlMap.get(url) + "</p>");
+            
+        } else {
+            out.println("non trouve");
+            for (Map.Entry<String, Mapping> entry : urlMap.entrySet()) {
+                out.println("<p>" + entry.getKey() + "\n" + entry.getValue() + "</p>");
+            }
+        }
+    }
 }
