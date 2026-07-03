@@ -47,8 +47,8 @@ FW
 [ok]    - s applique aux methodes
 [ok]    - valeur = string qui contient url
 
-- quand j'appelle l'url j'affiche l url + classe + methode 
-- si je trouve pas j'affiche toutes les urls + classes + methodes 
+[ok]- quand j'appelle l'url j'affiche l url + classe + methode 
+[ok]- si je trouve pas j'affiche toutes les urls + classes + methodes 
 
 [ok] classe mapping
     - classe
@@ -57,29 +57,41 @@ FW
 [ok] Fc : creation du map <url, mapping>
 
 init
-    - recuperer les controllers et mettre dans une liste de String (S1)
-    - url => classe associee + methode associee 
+[ok]    - url => classe associee + methode associee 
 
     [ok] - par classe
         - verifier si il y a un urlMapping
         - si oui le faire entrer dans le map
             - recuperer sa classe + sa methode en utilisant le type 
+            - afficher le mapping 
         - si non
-            - 
+            - afficher tout
 
-TEST 
+[ok] TEST 
 - annoter une methode avec l'urlmapping  
 
 ## S3 : unicite url
 
 FW:
-- classe UrlMethod
-    - url
-    - methode 
+[ok] - classe UrlMethod
+        - url
+        - methode 
+
     - surdefinir methode equals 
 
-- urlmapping
+    - surdefinir fonction hashcode 
+
+[ok] - urlmapping
     - ajouter attribut methode 
+
+FC :
+    - changer la cle de la map String -> UrlMethod 
+
+Utiliraire :
+    - si la cle existe deja -> lever une exception 
+
+## S3 Bis : application de S3
+- invoquer la fonction si l'url est connu 
 
 
 ## S4 : context listener
