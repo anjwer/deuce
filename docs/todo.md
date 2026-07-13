@@ -87,7 +87,7 @@ FW:
 [ok] FC :
     - changer la cle de la map String -> UrlMethod 
 
-Utiliraire :
+[ok]Utilitaire :
     - si la cle existe deja -> lever une exception 
 
 ## S3 Bis : application de S3
