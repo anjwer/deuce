@@ -60,7 +60,7 @@ public class Utilitaire {
 
     }*/
 
-    public static void setUrlMap(Map<String, Mapping> urlMap, String packageName, Class<? extends Annotation> controllerAnnotation){
+    public static void setUrlMap(Map<UrlMethod, Mapping> urlMap, String packageName, Class<? extends Annotation> controllerAnnotation){
 
         File[] files = getDirectoryFiles(packageName);
 
@@ -79,7 +79,12 @@ public class Utilitaire {
                                 mapping.setMethod(m);
 
                                 UrlMapping annotation = m.getAnnotation(UrlMapping.class);
-                                urlMap.put(annotation.value(), mapping);
+
+                                UrlMethod urlMethod = new UrlMethod();
+                                urlMethod.setUrl(annotation.value());
+                                urlMethod.setMethod(annotation.method());
+
+                                urlMap.put(urlMethod, mapping);
                             }
                         }
                     }

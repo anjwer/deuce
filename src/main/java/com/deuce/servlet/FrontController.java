@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.deuce.annotation.Controller;
 import com.deuce.utils.Mapping;
+import com.deuce.utils.UrlMethod;
 import com.deuce.utils.Utilitaire;
 
 import jakarta.servlet.ServletException;
@@ -15,7 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class FrontController extends HttpServlet {
-    private Map<String, Mapping> urlMap;
+    private Map<UrlMethod, Mapping> urlMap;
     
     public void init() throws ServletException {
         urlMap = new HashMap<>();

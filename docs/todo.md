@@ -84,7 +84,7 @@ FW:
 [ok] - urlmapping
     - ajouter attribut methode 
 
-FC :
+[ok] FC :
     - changer la cle de la map String -> UrlMethod 
 
 Utiliraire :
