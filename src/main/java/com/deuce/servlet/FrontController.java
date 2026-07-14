@@ -2,6 +2,8 @@ package com.deuce.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,24 +52,40 @@ public class FrontController extends HttpServlet {
                 out.println("<p> hellooooo world </p>");
 
                 String url = req.getRequestURI().substring(req.getContextPath().length());
+                String method = req.getMethod();
 
-                afficher(req, res, url, out);
+                afficher(req, res, url, method, out);
                 // if (controllersList != null) out.println("null");
 
                 out.println("</body></html>");
             }
         }
 
-    void afficher (HttpServletRequest req, HttpServletResponse res, String url, PrintWriter out)
+    void afficher (HttpServletRequest req, HttpServletResponse res, String url, String method, PrintWriter out)
         throws ServletException, IOException {
-        if (urlMap.containsKey(url)){
-            out.println("trouve");
-            out.println("<p>" + url + "\n" + urlMap.get(url) + "</p>");
+            UrlMethod urlMethod = new UrlMethod(url, method);
+            Mapping mapping = urlMap.get(urlMethod);
+
+        if (urlMap != null){
+            out.println("<p>URL: " + urlMethod.getUrl() + " avec la methode : " + urlMethod.getMethod() + "| Classe: " + mapping.getClass().getName() + " | Fonction: "
+                        + mapping.getMethod().getName() + "</p>");
+
+            try {
+                Object instance = mapping.getClass().getDeclaredConstructor().newInstance();
+                Method methode = mapping.getMethod();
+                Object resultat = methode.invoke(instance);
+
+                out.print("<script>console.log('" + resultat.toString() + "');</script>");
+            } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+                out.println("<p>Erreur lors de l'invocation de la méthode : " + e.getMessage() + "</p>");
+            }
             
         } else {
             out.println("non trouve");
-            for (Map.Entry<UrlMethod, Mapping> entry : urlMap.entrySet()) {
-                out.println("<p>" + entry.getKey() + "\n" + entry.getValue() + "</p>");
+            for (UrlMethod urlMethodDisponible : urlMap.keySet()) {
+                Mapping mappingDisponible = urlMap.get(urlMethodDisponible);
+                out.println("<p>URL: " + urlMethodDisponible.getUrl() + " avec la methode : " + urlMethodDisponible.getMethod() + "| Classe: " + mappingDisponible.getClasse().getName() + " | Fonction: "
+                        + mappingDisponible.getMethod().getName() + "</p>");
             }
         }
     }

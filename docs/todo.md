@@ -94,8 +94,8 @@ cleo :
 changer le url mapping en url method pour test
 
 ## S3 Bis : application de S3
-- invoquer la fonction si l'url est connu 
-
+[ok]- invoquer la fonction si l'url est connu 
+test : essayer les mauvaises url pour lever une exception 
 
 ## S4 : context listener
 - a prendre chez quelqu'un
