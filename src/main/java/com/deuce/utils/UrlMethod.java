@@ -23,9 +23,9 @@ public class UrlMethod {
     }
 
     @Override
-    public boolean equals(UrlMethod urlMethod){
-        if (this == urlMethod) return true;
-        return url.equals(urlMethod.getUrl()) && method.equalsIgnoreCase(urlMethod.getMethod());
+    public boolean equals(Object object){
+        UrlMethod urlMethod = (UrlMethod) object;
+        return this.getUrl().equals(urlMethod.getUrl()) && this.getMethod().equals(urlMethod.getMethod());
     }
 
      @Override

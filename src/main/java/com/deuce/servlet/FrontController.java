@@ -66,7 +66,7 @@ public class FrontController extends HttpServlet {
             
         } else {
             out.println("non trouve");
-            for (Map.Entry<String, Mapping> entry : urlMap.entrySet()) {
+            for (Map.Entry<UrlMethod, Mapping> entry : urlMap.entrySet()) {
                 out.println("<p>" + entry.getKey() + "\n" + entry.getValue() + "</p>");
             }
         }

@@ -89,6 +89,9 @@ FW:
 
 [ok]Utilitaire :
     - si la cle existe deja -> lever une exception 
+  
+cleo :
+changer le url mapping en url method pour test
 
 ## S3 Bis : application de S3
 - invoquer la fonction si l'url est connu 
