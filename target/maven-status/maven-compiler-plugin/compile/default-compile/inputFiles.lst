@@ -1,5 +1,9 @@
+/home/itu/s4/webdyn/projets/framework/deuce/src/main/java/com/deuce/view/ViewResolver.java
 /home/itu/s4/webdyn/projets/framework/deuce/src/main/java/com/deuce/annotation/UrlMapping.java
 /home/itu/s4/webdyn/projets/framework/deuce/src/main/java/com/deuce/servlet/FrontController.java
+/home/itu/s4/webdyn/projets/framework/deuce/src/main/java/com/deuce/view/ModelAndView.java
+/home/itu/s4/webdyn/projets/framework/deuce/src/main/java/com/deuce/utils/UrlMethod.java
 /home/itu/s4/webdyn/projets/framework/deuce/src/main/java/com/deuce/utils/Utilitaire.java
 /home/itu/s4/webdyn/projets/framework/deuce/src/main/java/com/deuce/annotation/Controller.java
 /home/itu/s4/webdyn/projets/framework/deuce/src/main/java/com/deuce/utils/Mapping.java
+/home/itu/s4/webdyn/projets/framework/deuce/src/main/java/com/deuce/listener/ApplicationListener.java
