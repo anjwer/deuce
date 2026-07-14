@@ -100,6 +100,12 @@ test : essayer les mauvaises url pour lever une exception
 ## S4 : context listener
 - a prendre chez quelqu'un
 
+à mettre dans projet test web.xml
+<listener>
+    <listener-class>com.deuce.listener.ApplicationListener</listener-class>
+</listener>
+
+
 ## S5 : affichage de liste en dur
 - ModelAndView 
     - map <String, object>
