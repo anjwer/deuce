@@ -20,14 +20,13 @@ import jakarta.servlet.http.HttpServletResponse;
 public class FrontController extends HttpServlet {
     private Map<UrlMethod, Mapping> urlMap;
     
+    @SuppressWarnings("unchecked")
     public void init() throws ServletException {
-        urlMap = new HashMap<>();
-        try {
-            String packageName = getServletConfig().getInitParameter("packageControllers");
-            Utilitaire.setUrlMap(urlMap, packageName, Controller.class);
-        } catch (Exception e) {
-            System.out.println("Erreur lors de la recuperation des controllers : " + e.getMessage());
-        } 
+        // On récupère le mapping qui a été chargé par l'ApplicationListener au démarrage de l'application
+        urlMap = (Map<UrlMethod, Mapping>) getServletContext().getAttribute("mapping");
+        if (urlMap == null) {
+            System.out.println("Attention: urlMap n'a pas pu être récupéré depuis le ServletContext.");
+        }
     }
 
     @Override
