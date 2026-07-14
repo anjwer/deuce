@@ -67,11 +67,11 @@ public class FrontController extends HttpServlet {
             Mapping mapping = urlMap.get(urlMethod);
 
         if (urlMap != null){
-            out.println("<p>URL: " + urlMethod.getUrl() + " avec la methode : " + urlMethod.getMethod() + "| Classe: " + mapping.getClass().getName() + " | Fonction: "
+            out.println("<p>URL: " + urlMethod.getUrl() + " avec la methode : " + urlMethod.getMethod() + "| Classe: " + mapping.getController().getName() + " | Fonction: "
                         + mapping.getMethod().getName() + "</p>");
 
             try {
-                Object instance = mapping.getClass().getDeclaredConstructor().newInstance();
+                Object instance = mapping.getController().getDeclaredConstructor().newInstance();
                 Method methode = mapping.getMethod();
                 Object resultat = methode.invoke(instance);
 
@@ -84,7 +84,7 @@ public class FrontController extends HttpServlet {
             out.println("non trouve");
             for (UrlMethod urlMethodDisponible : urlMap.keySet()) {
                 Mapping mappingDisponible = urlMap.get(urlMethodDisponible);
-                out.println("<p>URL: " + urlMethodDisponible.getUrl() + " avec la methode : " + urlMethodDisponible.getMethod() + "| Classe: " + mappingDisponible.getClasse().getName() + " | Fonction: "
+                out.println("<p>URL: " + urlMethodDisponible.getUrl() + " avec la methode : " + urlMethodDisponible.getMethod() + "| Classe: " + mappingDisponible.getController().getName() + " | Fonction: "
                         + mappingDisponible.getMethod().getName() + "</p>");
             }
         }
