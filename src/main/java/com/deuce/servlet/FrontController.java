@@ -46,13 +46,12 @@ public class FrontController extends HttpServlet {
 
             try (PrintWriter out = res.getWriter()) {
                 out.println("<html><body>");
-                out.println("<p> hellooooo world </p>");
+                // out.println("<p> hellooooo world </p>");
 
-                // String url = req.getRequestURI().substring(req.getContextPath().length());
-                // String method = req.getMethod();
+                String url = req.getRequestURI().substring(req.getContextPath().length());
+                String method = req.getMethod();
 
-                // afficher(req, res, url, method, out);
-                // if (controllersList != null) out.println("null");
+                afficher(req, res, url, method, out);
 
                 out.println("</body></html>");
             }
@@ -63,8 +62,13 @@ public class FrontController extends HttpServlet {
             UrlMethod urlMethod = new UrlMethod(url, method);
             Mapping mapping = urlMap.get(urlMethod);
 
-        if (urlMap != null){
-            out.println("<p>URL: " + urlMethod.getUrl() + " avec la methode : " + urlMethod.getMethod() + "| Classe: " + mapping.getController().getName() + " | Fonction: "
+        if (urlMap == null) {
+            out.println("<p>Erreur: urlMap est null. Le listener n'a pas bien initialisé les routes.</p>");
+            return;
+        }
+
+        if (mapping != null) {
+            out.println("<p>URL (cherchée) : " + urlMethod.getUrl() + " | methode : " + urlMethod.getMethod() + " | Mapping trouvé : Classe " + mapping.getController().getName() + " | Fonction: "
                         + mapping.getMethod().getName() + "</p>");
 
             try {
@@ -93,12 +97,14 @@ public class FrontController extends HttpServlet {
             }
             
         } else {
-            out.println("non trouve");
+            out.println("<p>Route non trouvée pour l'URL : " + urlMethod.getUrl() + "</p>");
+            out.println("<p>Routes disponibles :</p><ul>");
             for (UrlMethod urlMethodDisponible : urlMap.keySet()) {
                 Mapping mappingDisponible = urlMap.get(urlMethodDisponible);
-                out.println("<p>URL: " + urlMethodDisponible.getUrl() + " avec la methode : " + urlMethodDisponible.getMethod() + "| Classe: " + mappingDisponible.getController().getName() + " | Fonction: "
-                        + mappingDisponible.getMethod().getName() + "</p>");
+                out.println("<li>URL: " + urlMethodDisponible.getUrl() + " (" + urlMethodDisponible.getMethod() + ") -> Classe: " + mappingDisponible.getController().getName() + " | Fonction: "
+                        + mappingDisponible.getMethod().getName() + "</li>");
             }
+            out.println("</ul>");
         }
     }
 }
