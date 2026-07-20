@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 
-import com.deuce.annotation.Controller;
 import com.deuce.utils.Mapping;
 import com.deuce.utils.UrlMethod;
-import com.deuce.utils.Utilitaire;
+import com.deuce.view.ModelAndView;
+import com.deuce.view.ViewResolver;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,9 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class FrontController extends HttpServlet {
     private Map<UrlMethod, Mapping> urlMap;
     
-    @SuppressWarnings("unchecked")
     public void init() throws ServletException {
-        // On récupère le mapping qui a été chargé par l'ApplicationListener au démarrage de l'application
         urlMap = (Map<UrlMethod, Mapping>) getServletContext().getAttribute("mapping");
         if (urlMap == null) {
             System.out.println("Attention: urlMap n'a pas pu être récupéré depuis le ServletContext.");
@@ -48,13 +46,12 @@ public class FrontController extends HttpServlet {
 
             try (PrintWriter out = res.getWriter()) {
                 out.println("<html><body>");
-                out.println("<p> hellooooo world </p>");
+                // out.println("<p> hellooooo world </p>");
 
                 String url = req.getRequestURI().substring(req.getContextPath().length());
                 String method = req.getMethod();
 
                 afficher(req, res, url, method, out);
-                // if (controllersList != null) out.println("null");
 
                 out.println("</body></html>");
             }
@@ -65,8 +62,13 @@ public class FrontController extends HttpServlet {
             UrlMethod urlMethod = new UrlMethod(url, method);
             Mapping mapping = urlMap.get(urlMethod);
 
-        if (urlMap != null){
-            out.println("<p>URL: " + urlMethod.getUrl() + " avec la methode : " + urlMethod.getMethod() + "| Classe: " + mapping.getController().getName() + " | Fonction: "
+        if (urlMap == null) {
+            out.println("<p>Erreur: urlMap est null. Le listener n'a pas bien initialisé les routes.</p>");
+            return;
+        }
+
+        if (mapping != null) {
+            out.println("<p>URL (cherchée) : " + urlMethod.getUrl() + " | methode : " + urlMethod.getMethod() + " | Mapping trouvé : Classe " + mapping.getController().getName() + " | Fonction: "
                         + mapping.getMethod().getName() + "</p>");
 
             try {
@@ -74,18 +76,35 @@ public class FrontController extends HttpServlet {
                 Method methode = mapping.getMethod();
                 Object resultat = methode.invoke(instance);
 
-                out.print("<script>console.log('" + resultat.toString() + "');</script>");
+                if (resultat instanceof ModelAndView) {
+                    ModelAndView mv = (ModelAndView) resultat;
+                    ViewResolver viewResolver = new ViewResolver();
+                    viewResolver.setViewName(mv.getViewName());
+                    viewResolver.setPrefix(getServletContext().getInitParameter("prefixView"));
+                    viewResolver.setExtension(getServletContext().getInitParameter("extensionView"));
+
+                    for (Map.Entry<String, Object> entry : mv.getAttributes().entrySet()) {
+                        req.setAttribute(entry.getKey(), entry.getValue());
+                    }
+
+                    RequestDispatcher dispatcher = req.getRequestDispatcher(viewResolver.getCheminCompletVue());
+                    dispatcher.forward(req, res);
+                } else {
+                    out.println("<p>Le résultat de la méthode n'est pas de type ModelAndView.</p>");
+                }
             } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
                 out.println("<p>Erreur lors de l'invocation de la méthode : " + e.getMessage() + "</p>");
             }
             
         } else {
-            out.println("non trouve");
+            out.println("<p>Route non trouvée pour l'URL : " + urlMethod.getUrl() + "</p>");
+            out.println("<p>Routes disponibles :</p><ul>");
             for (UrlMethod urlMethodDisponible : urlMap.keySet()) {
                 Mapping mappingDisponible = urlMap.get(urlMethodDisponible);
-                out.println("<p>URL: " + urlMethodDisponible.getUrl() + " avec la methode : " + urlMethodDisponible.getMethod() + "| Classe: " + mappingDisponible.getController().getName() + " | Fonction: "
-                        + mappingDisponible.getMethod().getName() + "</p>");
+                out.println("<li>URL: " + urlMethodDisponible.getUrl() + " (" + urlMethodDisponible.getMethod() + ") -> Classe: " + mappingDisponible.getController().getName() + " | Fonction: "
+                        + mappingDisponible.getMethod().getName() + "</li>");
             }
+            out.println("</ul>");
         }
     }
 }
