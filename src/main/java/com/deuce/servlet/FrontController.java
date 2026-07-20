@@ -74,7 +74,23 @@ public class FrontController extends HttpServlet {
             try {
                 Object instance = mapping.getController().getDeclaredConstructor().newInstance();
                 Method methode = mapping.getMethod();
-                Object resultat = methode.invoke(instance);
+                
+                Class<?>[] parameterTypes = methode.getParameterTypes();
+                Object[] parametres = new Object[parameterTypes.length];
+                
+                String injectableType = getServletContext().getInitParameter("injectableContextType");
+                String injectableKey = getServletContext().getInitParameter("injectableContextKey");
+                
+                for (int i = 0; i < parameterTypes.length; i++) {
+                    if (injectableType != null && injectableKey != null && 
+                        parameterTypes[i].getName().equals(injectableType.trim())) {
+                        parametres[i] = getServletContext().getAttribute(injectableKey.trim());
+                    } else {
+                        parametres[i] = null;
+                    }
+                }
+                
+                Object resultat = methode.invoke(instance, parametres);
 
                 if (resultat instanceof ModelAndView) {
                     ModelAndView mv = (ModelAndView) resultat;
