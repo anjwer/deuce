@@ -28,26 +28,26 @@ public class ModelAndView {
         this.attributes = attributes;
     }
 
-    public Object getAttribut(String nom_attribut) {
+    public Object getAttribut(String nomAttribut) {
         if (this.attributes == null) {
             return null;
         }
-        if (nom_attribut == null || nom_attribut.isEmpty()) {
+        if (nomAttribut == null || nomAttribut.isEmpty()) {
             throw new IllegalArgumentException("Le nom de l'attribut ne peut pas être null ou vide.");
         }
-        if (!this.attributes.containsKey(nom_attribut)) {
-            throw new IllegalArgumentException("L'attribut " + nom_attribut + " n'existe pas.");
+        if (!this.attributes.containsKey(nomAttribut)) {
+            throw new IllegalArgumentException("L'attribut " + nomAttribut + " n'existe pas.");
         }
-        return this.attributes.get(nom_attribut);
+        return this.attributes.get(nomAttribut);
     }
 
-    public void addAttribut(String nom_attribut, Object valeur) {
-        if (nom_attribut == null || nom_attribut.isEmpty()) {
+    public void addAttribut(String nomAttribut, Object valeur) {
+        if (nomAttribut == null || nomAttribut.isEmpty()) {
             throw new IllegalArgumentException("Le nom de l'attribut ne peut pas être null ou vide.");
         }
-        if (this.attributes.containsKey(nom_attribut)) {
-            throw new IllegalArgumentException("L'attribut " + nom_attribut + " existe déjà.");
+        if (this.attributes.containsKey(nomAttribut)) {
+            throw new IllegalArgumentException("L'attribut " + nomAttribut + " existe déjà.");
         }
-        this.attributes.put(nom_attribut, valeur);
+        this.attributes.put(nomAttribut, valeur);
     }
 }
