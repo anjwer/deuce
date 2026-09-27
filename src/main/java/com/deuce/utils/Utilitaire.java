@@ -61,7 +61,6 @@ public class Utilitaire {
     }*/
 
     public static void setUrlMap(Map<UrlMethod, Mapping> urlMap, String packageName, Class<? extends Annotation> controllerAnnotation){
-
         File[] files = getDirectoryFiles(packageName);
 
         if (files != null) {

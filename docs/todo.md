@@ -122,8 +122,10 @@ test : essayer les mauvaises url pour lever une exception
 ## S6 : 
 tsy mandeha vue fa mamerina JSON 
 pas de request dispatcher mais retourne JSON
-cote FW : on ajoute une annotation de methode @WebApi (attributs true/false si c dj json ou pas mais a ajouter plus tard )
-sur frontservlet : tester l'exitence de cette anno sur la methode avant dispatch 
+
+[ok] cote FW : on ajoute une annotation de methode @WebApi 
+(attributs true/false si c dj json ou pas mais à ajouter plus tard )
+[ok] sur frontservlet : tester l'exitence de cette anno sur la methode avant dispatch 
 si oui = retourne JSON 
 changer le content type en JSON => retourner un object depuis test et transforner cet objet en json et envoyer en print writter (different de string va en json)
 sinon pas de transfo cote fw fa on change direct en json depuis dev (on obtient un string)
