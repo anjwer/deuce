@@ -130,3 +130,16 @@ si oui = retourne JSON
 changer le content type en JSON => retourner un object depuis test et transforner cet objet en json et envoyer en print writter (different de string va en json)
 sinon pas de transfo cote fw fa on change direct en json depuis dev (on obtient un string)
 bloc if else 
+
+## S7 :
+binding de formulaire 
+donnees venant de la vue vers controller (ex formulaire)
+click bouton -> url -> mapper avec une methode du controller (save par exemple)
+click -> front servlet -> verifier la methode si c'est save par exemple -> verifier si cette methode a des parametres 
+on cree une fonction save cote developpeur, par defaut les params sont nulls
+
+cas 1 : pas objet 
+    - on match les params du formulaire avec les attributs
+    - invoke 
+cas 2 : objet 
+    - null
