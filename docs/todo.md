@@ -131,7 +131,7 @@ changer le content type en JSON => retourner un object depuis test et transforne
 sinon pas de transfo cote fw fa on change direct en json depuis dev (on obtient un string)
 bloc if else 
 
-## S7 :
+## S7 (11 oct) :
 binding de formulaire 
 donnees venant de la vue vers controller (ex formulaire)
 click bouton -> url -> mapper avec une methode du controller (save par exemple)
@@ -143,3 +143,7 @@ cas 1 : pas objet
     - invoke 
 cas 2 : objet 
     - null
+
+7 bis 
+- methode d'action (constroller)
+binding objet -> argement direct objet Employe 
