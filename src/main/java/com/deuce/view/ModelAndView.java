@@ -32,9 +32,9 @@ public class ModelAndView {
         if (this.attributes == null) {
             return null;
         }
-        if (nomAttribut == null || nomAttribut.isEmpty()) {
-            throw new IllegalArgumentException("Le nom de l'attribut ne peut pas être null ou vide.");
-        }
+        // if (nomAttribut == null || nomAttribut.isEmpty()) {
+        //     throw new IllegalArgumentException("Le nom de l'attribut ne peut pas être null ou vide.");
+        // }
         if (!this.attributes.containsKey(nomAttribut)) {
             throw new IllegalArgumentException("L'attribut " + nomAttribut + " n'existe pas.");
         }
@@ -42,9 +42,10 @@ public class ModelAndView {
     }
 
     public void addAttribut(String nomAttribut, Object valeur) {
-        if (nomAttribut == null || nomAttribut.isEmpty()) {
-            throw new IllegalArgumentException("Le nom de l'attribut ne peut pas être null ou vide.");
-        }
+        
+        // if (nomAttribut == null || nomAttribut.isEmpty()) {
+        //     throw new IllegalArgumentException("Le nom de l'attribut ne peut pas être null ou vide.");
+        // }
         if (this.attributes.containsKey(nomAttribut)) {
             throw new IllegalArgumentException("L'attribut " + nomAttribut + " existe déjà.");
         }

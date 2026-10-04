@@ -8,7 +8,7 @@ import java.util.Map;
 
 import com.deuce.annotation.UrlMapping;
 
-public class Utilitaire {
+public class Utils {
     
     public static File[] getDirectoryFiles(String packageName){
         File [] files = new File[0];
@@ -93,6 +93,20 @@ public class Utilitaire {
             }
         }
  
+    }
+
+    public static Object convertType(String input, Class<?> targetType){
+        if (targetType == String.class) {
+            return input;
+        } else if (targetType == int.class || targetType == Integer.class) {
+            return Integer.parseInt(input);
+        } else if (targetType == boolean.class || targetType == Boolean.class) {
+            return Boolean.parseBoolean(input);
+        } else if (targetType == double.class || targetType == Double.class) {
+            return Double.parseDouble(input);
+        }
+        
+        return input;
     }
 
 }
