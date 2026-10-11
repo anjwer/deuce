@@ -143,7 +143,11 @@ cas 1 : pas objet
     - invoke 
 cas 2 : objet 
     - null
-
+  
+debug 
+    - conversion apiana types bdb
+    - cleo : web.xml = copier aaron 
+  
 erreur : gestion du save 
 7 bis 
 - methode d'action (constroller)
