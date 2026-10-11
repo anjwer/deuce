@@ -6,7 +6,7 @@ import java.util.Map;
 import com.deuce.annotation.Controller;
 import com.deuce.utils.Mapping;
 import com.deuce.utils.UrlMethod;
-import com.deuce.utils.Utilitaire;
+import com.deuce.utils.Utils;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
@@ -24,7 +24,7 @@ public class ApplicationListener implements ServletContextListener {
         Map<UrlMethod, Mapping> mapping = new HashMap<>();
         
         try {
-            Utilitaire.setUrlMap(mapping, packageController, Controller.class);
+            Utils.setUrlMap(mapping, packageController, Controller.class);
             context.setAttribute("mapping", mapping);
         } catch (Exception e) {
             System.out.println("Erreur lors de l'initialisation du mapping (Listener) : " + e.getMessage());
