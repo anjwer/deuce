@@ -8,6 +8,8 @@ import java.util.Map;
 
 import com.deuce.annotation.UrlMapping;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 public class Utils {
     
     public static File[] getDirectoryFiles(String packageName){
@@ -109,4 +111,36 @@ public class Utils {
         return input;
     }
 
+// bind
+   /*  private static Object createInstance(Class<?> clazz) throws Exception {
+        if (clazz.getDeclaredConstructors().length == 0) {
+            return clazz.getDeclaredConstructor().newInstance();
+        }
+
+        // Utilise par défaut le premier constructeur trouvé
+        var constructor = clazz.getDeclaredConstructors()[0];
+        constructor.setAccessible(true);
+        Object[] args = new Object[constructor.getParameterCount()];
+        for (int i = 0; i < args.length; i++) {
+            Class<?> pType = constructor.getParameterTypes()[i];
+            args[i] = pType.isPrimitive() ? 0 : null;
+        }
+        return constructor.newInstance(args);
+    }
+
+    private static boolean isSimpleType(Class<?> type) {
+        return type.isPrimitive() || type.equals(String.class) || Number.class.isAssignableFrom(type) || type.equals(Boolean.class);
+    }
+
+    private static String decapitalize(String str) {
+        if (str == null || str.isEmpty()) return str;
+        return str.substring(0, 1.toLowerCase().charAt(0)) + str.substring(1);
+    }
+
+    private static boolean hasParamStartingWith(HttpServletRequest req, String prefix) {
+        for (String key : req.getParameterMap().keySet()) {
+            if (key.toLowerCase().startsWith(prefix.toLowerCase())) return true;
+        }
+        return false;
+    }*/
 }
