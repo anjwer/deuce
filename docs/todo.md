@@ -152,3 +152,9 @@ erreur : gestion du save
 7 bis 
 - methode d'action (constroller)
 binding objet -> argement direct objet Employe 
+
+## S8
+attribut de classe byte[]
+notre classe MapFile(filename, extension, byte[]) au lieu de byte[]
+
+on instancie cote FW
