@@ -5,7 +5,9 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 public class ParameterBinder {  
-    public static Object bind(Map<String, String[]> parameterMap, Class<?> type, String paramName, PrintWriter out) {
+    public static Object bind(HttpServletRequest req, Class<?> type, String paramName, PrintWriter out) {
+        Map<String, String[]> parameterMap = req.getParameterMap();
+        
         if (isSimpleType(type)) {
             String rawValue = findParamIgnoreCase(parameterMap, paramName);
 
@@ -14,6 +16,8 @@ public class ParameterBinder {
             }
 
             return Utils.convertType(rawValue, type);
+        } else if (isMapFile(type)) {
+            Object instance = 
         }
 
         try {
@@ -51,6 +55,10 @@ public class ParameterBinder {
                type.equals(Character.class);
     }
 
+    private static boolean isMapFile(Class<?> type){
+        return type.equals(com.deuce.utils.MapFile); 
+    }
+     
     private static String findParamIgnoreCase(Map<String, String[]> parameterMap, String name) {
         for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
             if (entry.getKey().equalsIgnoreCase(name)) {
@@ -66,4 +74,8 @@ public class ParameterBinder {
     private static boolean hasParam(Map<String, String[]> parameterMap, String name) {
         return findParamIgnoreCase(parameterMap, name) != null;
     }
+
+    // private MapFile bindToFile(){
+
+    // }
 }

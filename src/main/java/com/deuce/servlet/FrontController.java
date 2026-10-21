@@ -125,7 +125,7 @@ public class FrontController extends HttpServlet {
         Parameter[] parametersInfo = methode.getParameters();
         Object[] parameters = new Object[parameterTypes.length];
 
-        Map<String, String[]> parameterMap = req.getParameterMap();
+        // Map<String, String[]> parameterMap = req.getParameterMap();
 
         String injectableType = getServletContext().getInitParameter("injectableContextType");
         String injectableKey = getServletContext().getInitParameter("injectableContextKey");
@@ -145,7 +145,7 @@ public class FrontController extends HttpServlet {
                 String rawValue = findParamIgnoreCase(req, paramName);
 
                 parameters[i] = Utils.convertType(rawValue, parameterTypes[i]);*/
-                parameters[i] = ParameterBinder.bind(parameterMap, paramType, paramName, out);
+                parameters[i] = ParameterBinder.bind(req, paramType, paramName, out);
             }
         }
         return parameters;
