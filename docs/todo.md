@@ -152,3 +152,45 @@ erreur : gestion du save
 7 bis 
 - methode d'action (constroller)
 binding objet -> argement direct objet Employe 
+
+## S8
+creer notre classe MapFile(filename, extension, byte[] au lieu de byte[], size, contentType)
+- 
+- rajouter une confition au binding (si le params est MapFile)
+    - recuperer les part de la requete
+    - creer une instance de MapFile 
+
+on instancie cote FW
+
+## S9 : session 
+session de l'utilisateur dispo dans le controlleur du developpeur 
+- tsy miasa saina autorisation aloha 
+    - controlleur asiana anno quand on va faire authorisation 
+    - gestion des roles 
+
+*Amboarina fa tsy atao zao e*
+- 1 controlleur = 1 instance (singleton)
+    - mettre une condition a l'instanciation 
+    - atao anaty contexte 
+    - cle : controlleur valeur : instance
+
+Classe session a nous cote FW
+- map String Object 
+- recpu, ajouter, supp des variables dans les sessions en utils dans la classe
+atao anaty methode d'action pour jouer avec la session
+- (FW) : traitement de params (session en params) pour verifier si misy type session 
+    - oui -> instance -> remplir la map de HttpSession
+    - mettre a jour httpsession apres invoke 
+    - objectif : pas de htt session direct cote dev 
+
+servlet context on peut appeler partout mais pas tjs dans init
+
+## S10 : 
+- methode d'action cote controlleur dev => tsy maintsy co/ authentifie vao afaka mi execute azy
+- nouvelle anno Auth 
+cote fw
+- verifier si authetifie ou pas le mec 
+- config pour verifier (web.xml = definir frontservlet, init params : nom de la variable session a verifier si connecte, 1 fois alaina donc init apetraka anaty servlet context)
+
+## S10bis 
+connecte + role specifique 
