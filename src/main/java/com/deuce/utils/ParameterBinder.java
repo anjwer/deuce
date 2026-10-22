@@ -3,6 +3,8 @@ package com.deuce.utils;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.Map;
+import jakarta.servlet.http.Part;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class ParameterBinder {  
     public static Object bind(HttpServletRequest req, Class<?> type, String paramName, PrintWriter out) {
@@ -16,8 +18,20 @@ public class ParameterBinder {
             }
 
             return Utils.convertType(rawValue, type);
-        } else if (isMapFile(type)) {
-            Object instance = 
+        } else if (type.equals(com.deuce.utils.MapFile.class)) {
+            try {
+                boolean isMultipart = req.getContentType() != null && req.getContentType().toLowerCase().startsWith("multipart/");
+                if (isMultipart) {
+                    Part part = req.getPart(paramName);
+                    if (part != null && part.getSize() > 0) {
+                        return new com.deuce.utils.MapFile(part);
+                    }
+                }
+            } catch (Exception e) {
+                out.println("Erreur lors de la récupération du fichier pour " + paramName + " : " + e.getMessage());
+                e.printStackTrace();
+            }
+            return null;
         }
 
         try {
@@ -30,7 +44,7 @@ public class ParameterBinder {
                     lookupName = field.getName();
                 }
 
-                Object fieldValue = bind(parameterMap, field.getType(), lookupName, out);
+                Object fieldValue = bind(req, field.getType(), lookupName, out);
                 if (fieldValue != null) {
                     field.set(instance, fieldValue);
                 }
