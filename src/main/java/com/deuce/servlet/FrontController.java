@@ -5,10 +5,13 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.deuce.annotation.WebApi;
 import com.deuce.utils.Mapping;
 import com.deuce.utils.ParameterBinder;
+import com.deuce.utils.Session;
+import com.deuce.utils.SessionUtils;
 import com.deuce.utils.UrlMethod;
 import com.deuce.view.ModelAndView;
 import com.deuce.view.ViewResolver;
@@ -19,6 +22,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class FrontController extends HttpServlet {
     private Map<UrlMethod, Mapping> urlMap;
@@ -70,6 +74,23 @@ public class FrontController extends HttpServlet {
                 
                 // récup la méthode a executer
                 Method methode = mapping.getMethod();
+
+                // vérification de la session
+                ConcurrentHashMap<String, Session> sessionMap = (ConcurrentHashMap<String, Session>) getServletContext().getAttribute("sessionMap");
+                HttpSession hs = req.getSession();
+                String idSession = req.getSession().getId();
+                
+                Session sessionUser = sessionMap.get(idSession);
+                if (sessionUser == null) {
+                    sessionUser = new Session();
+                    sessionMap.put(idSession, sessionUser);
+                }
+                
+                SessionUtils.fillSession(sessionUser, hs);
+                // stocker la httpsession actuelle 
+                req.setAttribute("currentSession", sessionUser);
+                
+                
                 // preparation des paramètres pour la methode
                 Object[] parameters = resolveParameters(req, out, methode);
 
@@ -83,7 +104,6 @@ public class FrontController extends HttpServlet {
                         "<p> Paramètre " + i + " : "
                         + (param == null ? "NULL" : param.getClass().getName()) + "/<p>"
                     );
-
                     if (param != null) {
                         out.println(param);
                     }
@@ -92,6 +112,9 @@ public class FrontController extends HttpServlet {
 
                 // invokeee
                 Object resultat = methode.invoke(instance, parameters);
+
+                // synchronisation des sessions
+                SessionUtils.syncSession(sessionUser, hs);
                 renderResponse(req, res, out, mapping, resultat);
 
             } catch (Exception e) {

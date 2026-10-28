@@ -3,8 +3,10 @@ package com.deuce.utils;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.Map;
-import jakarta.servlet.http.Part;
+
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 public class ParameterBinder {  
     public static Object bind(HttpServletRequest req, Class<?> type, String paramName, PrintWriter out) {
@@ -18,7 +20,7 @@ public class ParameterBinder {
             }
 
             return Utils.convertType(rawValue, type);
-        } else if (type.equals(com.deuce.utils.MapFile.class)) {
+        } else if (MapFile.class.isAssignableFrom(type)) {
             try {
                 boolean isMultipart = req.getContentType() != null && req.getContentType().toLowerCase().startsWith("multipart/");
                 if (isMultipart) {
@@ -32,6 +34,23 @@ public class ParameterBinder {
                 e.printStackTrace();
             }
             return null;
+        } else if (Session.class.isAssignableFrom(type)) {
+            try {
+                Session sessionUser = (Session) req.getAttribute("currentSession");
+        
+                if (sessionUser == null) {
+                    HttpSession hs = req.getSession(true);
+                    sessionUser = new Session();
+                    SessionUtils.fillSession(sessionUser, hs);
+                    req.setAttribute("currentSession", sessionUser);
+                }
+                return sessionUser;
+
+            } catch (Exception e) {
+                out.println("Erreur lors de la récupération de la session pour " + paramName + " : " + e.getMessage());
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
         }
 
         try {
@@ -69,9 +88,9 @@ public class ParameterBinder {
                type.equals(Character.class);
     }
 
-    private static boolean isMapFile(Class<?> type){
-        return type.equals(com.deuce.utils.MapFile); 
-    }
+    // private static boolean isMapFile(Class<?> type){
+    //     return type.equals(com.deuce.utils.MapFile); 
+    // }
      
     private static String findParamIgnoreCase(Map<String, String[]> parameterMap, String name) {
         for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {

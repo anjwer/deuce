@@ -2,9 +2,11 @@ package com.deuce.listener;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.deuce.annotation.Controller;
 import com.deuce.utils.Mapping;
+import com.deuce.utils.Session;
 import com.deuce.utils.UrlMethod;
 import com.deuce.utils.Utils;
 
@@ -22,10 +24,15 @@ public class ApplicationListener implements ServletContextListener {
         }
 
         Map<UrlMethod, Mapping> mapping = new HashMap<>();
+        ConcurrentHashMap<String, Session> sessionMap = new ConcurrentHashMap<>();
+        
         
         try {
             Utils.setUrlMap(mapping, packageController, Controller.class);
+            // SessionUtils.setSessionMap(sessionMap);
+
             context.setAttribute("mapping", mapping);
+            context.setAttribute("sessionMap", sessionMap);
         } catch (Exception e) {
             System.out.println("Erreur lors de l'initialisation du mapping (Listener) : " + e.getMessage());
             e.printStackTrace();
