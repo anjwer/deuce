@@ -175,13 +175,22 @@ session de l'utilisateur dispo dans le controlleur du developpeur
     - cle : controlleur valeur : instance
 
 Classe session a nous cote FW
-- map String Object 
-- recpu, ajouter, supp des variables dans les sessions en utils dans la classe
+[ok]- attributs map String Object 
+[ok] - mettre les fonctions de session dans la classe 
+- fonction qui va transformer les attributs de request.getSession dans le map de Session
+[ok]- mamorona map, clé id session et valeur la session (Session) à placer dans le context
+[ok]- verifier si efa misy session avec ce id raha misy dia alaina sinon mamorona vaovao
+[ok] - verifier si dans les parametres de la fonction cote dev hoe misy session ve 
+[ok] - si oui = injecte la session avy any @ Front controller
+[ok] - apres avoir injecte, il faut synchroniser les session Session vers HTTP session
+
+
+- recup, ajouter, supp des variables dans les sessions en utils dans la classe
 atao anaty methode d'action pour jouer avec la session
 - (FW) : traitement de params (session en params) pour verifier si misy type session 
     - oui -> instance -> remplir la map de HttpSession
     - mettre a jour httpsession apres invoke 
-    - objectif : pas de htt session direct cote dev 
+    - objectif : pas de http session direct cote dev 
 
 servlet context on peut appeler partout mais pas tjs dans init
 
@@ -194,3 +203,10 @@ cote fw
 
 ## S10bis 
 connecte + role specifique 
+créer une annotation qui va contenir les roles 
+- on dépose dnas la session le profil de l'user connecté 
+- variable pour garder le role de l'user
+- le dev va déposer le role de l'user connecté
+  - on peut mettre dans web.xml
+  - misy on prend le nom de varibale puis on vérifie dans la session
+  - si role existe on compare avec le rolde dans l'annotation 
