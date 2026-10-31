@@ -70,9 +70,19 @@ public class FrontController extends HttpServlet {
         }
 
         if (mapping != null) {
+            Map<Class<?>, Object> controllerMap = (Map<Class<?>, Object>) getServletContext().getAttribute("controllerMap");
             try {
+                Object instance = new Object();
+                if (controllerMap.containsKey(mapping.getController())) {
+                    instance = controllerMap.get(mapping.getController());
+                    out.println("<p> efa misy e </p>");
+
+                } else {
+                    out.println("<p> vao amboarina e </p>");
+                    instance = mapping.getController().getDeclaredConstructor().newInstance();
+                    controllerMap.put(mapping.getController(), instance);
+                }
                 // creation d'une instance du controller qu'on recup depuis le mapping
-                Object instance = mapping.getController().getDeclaredConstructor().newInstance();
                 
                 // récup la méthode a executer
                 Method methode = mapping.getMethod();
