@@ -7,6 +7,7 @@ import java.lang.reflect.Parameter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.deuce.annotation.Auth;
 import com.deuce.annotation.WebApi;
 import com.deuce.utils.Mapping;
 import com.deuce.utils.ParameterBinder;
@@ -75,6 +76,9 @@ public class FrontController extends HttpServlet {
                 // récup la méthode a executer
                 Method methode = mapping.getMethod();
 
+                
+
+
                 // vérification de la session
                 ConcurrentHashMap<String, Session> sessionMap = (ConcurrentHashMap<String, Session>) getServletContext().getAttribute("sessionMap");
                 HttpSession hs = req.getSession();
@@ -90,7 +94,10 @@ public class FrontController extends HttpServlet {
                 // stocker la httpsession actuelle 
                 req.setAttribute("currentSession", sessionUser);
                 
-                
+                // vérifier si besoin d'authentification et PAS authetifié
+                if (methode.isAnnotationPresent(Auth.class) && !checkAuth(sessionUser)) {
+                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentification requise");
+                } 
                 // preparation des paramètres pour la methode
                 Object[] parameters = resolveParameters(req, out, methode);
 
@@ -272,5 +279,15 @@ public class FrontController extends HttpServlet {
         } else {
             out.println("<p>Le résultat de la méthode n'est pas de type ModelAndView.</p>");
         }
+    }
+
+    private boolean checkAuth(Session sessionUser){
+        String authParam = getServletContext().getInitParameter("authParam");
+        // vérifier si connecté 
+        if (sessionUser.getAttribute(authParam)!= null) {
+            return true;
+        }
+        return false;
+
     }
 }
