@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -94,10 +95,12 @@ public class FrontController extends HttpServlet {
                 // stocker la httpsession actuelle 
                 req.setAttribute("currentSession", sessionUser);
                 
-                // vérifier si besoin d'authentification et PAS authetifié
-                if (methode.isAnnotationPresent(Auth.class) && !checkAuth(sessionUser)) {
-                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentification requise");
+                // vérifier, false = erreur 401
+                if (!checkAuth(sessionUser, methode)) {
+                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentification requise pour exécuter cette méthode");
+                    return;
                 } 
+
                 // preparation des paramètres pour la methode
                 Object[] parameters = resolveParameters(req, out, methode);
 
@@ -281,13 +284,26 @@ public class FrontController extends HttpServlet {
         }
     }
 
-    private boolean checkAuth(Session sessionUser){
-        String authParam = getServletContext().getInitParameter("authParam");
-        // vérifier si connecté 
-        if (sessionUser.getAttribute(authParam)!= null) {
-            return true;
+    // true = peut excécuter la methode 
+    // false = erreur 401
+    private boolean checkAuth(Session sessionUser, Method methode){
+        // verif si besoin d'auth
+        if (methode.isAnnotationPresent(Auth.class)) {
+            // vérifier si connecté 
+            String authParam = getServletContext().getInitParameter("authParam");
+            if (sessionUser.getAttribute(authParam)== null) {
+                return false;
+            }
+
+            // vérifier les roles
+            String roleParam = getServletContext().getInitParameter("roleParam");
+            Auth annotation = methode.getAnnotation(Auth.class);
+            String[] roles = annotation.roles();
+            String rolesSession = (String) sessionUser.getAttribute(roleParam);
+
+            return Arrays.asList(roles).contains(rolesSession);     
         }
-        return false;
+        return true;
 
     }
 }
