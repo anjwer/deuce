@@ -212,3 +212,9 @@ créer une annotation qui va contenir les roles
   - on peut mettre dans web.xml
   - misy on prend le nom de varibale puis on vérifie dans la session
   - si role existe on compare avec le role dans l'annotation 
+
+## S11 (singleton)
+- 1 controlleur = 1 instance (singleton)
+[ok]    - mettre une condition a l'instanciation 
+[ok]    - atao anaty contexte 
+[ok]    - cle : controlleur, valeur : instance

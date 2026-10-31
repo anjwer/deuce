@@ -25,6 +25,8 @@ public class ApplicationListener implements ServletContextListener {
 
         Map<UrlMethod, Mapping> mapping = new HashMap<>();
         ConcurrentHashMap<String, Session> sessionMap = new ConcurrentHashMap<>();
+        Map<Class<?>, Object> controllerMap = new HashMap<>();
+    
         
         
         try {
@@ -33,6 +35,7 @@ public class ApplicationListener implements ServletContextListener {
 
             context.setAttribute("mapping", mapping);
             context.setAttribute("sessionMap", sessionMap);
+            context.setAttribute("controllerMap", controllerMap);
         } catch (Exception e) {
             System.out.println("Erreur lors de l'initialisation du mapping (Listener) : " + e.getMessage());
             e.printStackTrace();
