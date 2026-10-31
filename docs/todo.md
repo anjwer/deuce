@@ -198,17 +198,17 @@ servlet context on peut appeler partout mais pas tjs dans init
 - methode d'action cote controlleur dev => tsy maintsy co/ authentifie vao afaka mi execute azy
 [ok] - nouvelle anno Auth 
 cote fw
-verifier si authetifie ou pas le mec 
+[ok] verifier si authetifie ou pas le mec 
     - la methode a l'anno Auth ? 
     - oui = vérifier si la session contient la connexion du user
-- config pour verifier (web.xml = definir frontservlet, init params : nom de la variable session a verifier si connecte, 1 fois alaina donc init apetraka anaty servlet context)
+[ok] - config pour verifier (web.xml = definir frontservlet, init params : nom de la variable session a verifier si connecte, 1 fois alaina donc init apetraka anaty servlet context)
 
 ## S10bis 
 connecte + role specifique 
 créer une annotation qui va contenir les roles 
-- on dépose dans la session le profil de l'user connecté 
-- variable pour garder le role de l'user
+[ok] - on dépose dans la session le profil de l'user connecté 
+[ok] - variable pour garder le role de l'user
 - le dev va déposer le role de l'user connecté
   - on peut mettre dans web.xml
   - misy on prend le nom de varibale puis on vérifie dans la session
-  - si role existe on compare avec le rolde dans l'annotation 
+  - si role existe on compare avec le role dans l'annotation 
